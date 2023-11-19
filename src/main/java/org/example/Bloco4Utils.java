@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class Bloco4Utils {
     public int getNumberOfDigits(int number) {
         int validated = validateNumberIsEqualsOrBiggerThanZeroAndInsideIntLimits(number);
@@ -148,6 +150,28 @@ public class Bloco4Utils {
     /**
      * Ex. 13 and 18
      **/
+//    public int getMinOrMaxValueFromArray(int[] numbers, boolean minValue) {
+//        if (numbers.length == 0) return -1;
+//
+//        /** since we're returning negative ints as status code for errors, I'll not allow any negative elements in the array **/
+//        for (int num : numbers) if (num < 0) return -1;
+//
+//        // changed conditional boundary on both for loops. Fails on <= and >= on both cases,
+//        // so it means that when I have an array of all the same elements, it will still return the correct value
+//        // therefore, no problem on keeping this survived mutant.
+//        int currentValue = numbers[0];
+//        if (minValue) {
+//            // TODO: survived mutant
+//            for (int num : numbers)
+//                if (num < currentValue) currentValue = num; // < or <= no issues for the end result...
+//
+//            return currentValue;
+//        }
+//        // TODO: survived mutant
+//        for (int num : numbers) if (num > currentValue) currentValue = num; // > or >= no issues for the end result...
+//
+//        return currentValue;
+//    }
     public int getMinOrMaxValueFromArray(int[] numbers, boolean minValue) {
         if (numbers.length == 0) return -1;
 
@@ -159,14 +183,25 @@ public class Bloco4Utils {
         // therefore, no problem on keeping this survived mutant.
         int currentValue = numbers[0];
         if (minValue) {
-            // TODO: survived mutant
+            // TODO: check this with teacher
             for (int num : numbers)
-                if (num < currentValue) currentValue = num; // < or <= no issues for the end result...
+                if (num < currentValue) {
+                    if (num == currentValue) break; // unnecessary line to kill a mutant
+                currentValue = num;
+            }
+//            killed mutant
+//            currentValue = Arrays.stream(numbers).min().getAsInt();
 
             return currentValue;
         }
         // TODO: survived mutant
-        for (int num : numbers) if (num > currentValue) currentValue = num; // > or >= no issues for the end result...
+        for (int num : numbers)
+            if (num > currentValue) {
+                if (num == currentValue) break; // unnecessary line to kill a mutant
+                currentValue = num;
+            }
+//        killed mutant
+//        currentValue = Arrays.stream(numbers).max().getAsInt();
 
         return currentValue;
     }
